@@ -1108,6 +1108,11 @@ class TestJsonPathRendering(TestCase):
     def test_hyphen(self):
         self.validate_json_path_rendering("-", "$['-']")
 
+    def test_trailing_newline(self):
+        # re.match + $ treats a final newline as optional, so "x\n" used to
+        # look like a dotted identifier and jsonpath-ng selected "x" instead.
+        self.validate_json_path_rendering("x\n", "$['x\n']")
+
     def test_json_path_injection(self):
         self.validate_json_path_rendering("a[0]", "$['a[0]']")
 
